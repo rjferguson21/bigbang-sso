@@ -103,8 +103,6 @@ export class KeycloakAPI {
       if (userId === undefined) {
         throw new Error(`failed to find the user created for ${username}`);
       }
-
-      return userId;
     }
 
     // If we're getting an update on the user, it will regenerate their password

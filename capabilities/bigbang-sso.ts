@@ -63,14 +63,14 @@ When(a.Secret)
 
     const k8sApi = new K8sAPI();
 
-    const password = await k8sApi.getSecretValue(
-      "keycloak",
-      "keycloak-env",
-      "KEYCLOAK_ADMIN_PASSWORD:"
-    );
+    // const password = await k8sApi.getSecretValue(
+    //   "keycloak",
+    //   "keycloak-env",
+    //   "KEYCLOAK_ADMIN_PASSWORD:"
+    // );
 
     // For some reason KK password in BB is password and not KEYCLOAK_ADMIN
-    const kcAPI = new KeycloakAPI(keycloakBaseUrl, password);
+    const kcAPI = new KeycloakAPI(keycloakBaseUrl, 'password');
 
     await kcAPI.createOrGetKeycloakRealm(realmName)
     
