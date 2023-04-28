@@ -62,19 +62,17 @@ When(a.Secret)
   .Then(async change => {
 
     const k8sApi = new K8sAPI();
+
     const password = await k8sApi.getSecretValue(
       "keycloak",
       "keycloak-env",
-      "KEYCLOAK_ADMIN"
+      "KEYCLOAK_ADMIN_PASSWORD:"
     );
 
-    // XXX: BDW: init the kc API, pass in username/password, get a token
-    const kcAPI = new KeycloakAPI(keycloakBaseUrl, 'password');
+    // For some reason KK password in BB is password and not KEYCLOAK_ADMIN
+    const kcAPI = new KeycloakAPI(keycloakBaseUrl, password);
 
-    // XXX: BDW: realmname should come from config
-    await kcAPI.createOrGetKeycloakRealm(realmName).catch(reason => {
-      console.log(reason);
-    })
+    await kcAPI.createOrGetKeycloakRealm(realmName)
     
     const secret = await kcAPI.createOrGetClientSecret(
       realmName,
@@ -99,7 +97,7 @@ When(a.Secret)
     change.Raw.data["oidcinitcfg.yaml"] = Buffer.from(stringify(oidcConfig)).toString("base64")
 
     const generatedPassword = await kcAPI.createUser(realmName, user.username, user.email, user.first, user.last)
-    
+
     await k8sApi.createKubernetesSecret(
       change.Raw.metadata.namespace,
       'neuvector-sso-user',
