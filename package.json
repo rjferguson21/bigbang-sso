@@ -1,0 +1,35 @@
+{
+  "name": "bigbang-sso",
+  "version": "0.0.1",
+  "description": "Configures SSO for Big Bang packages",
+  "keywords": [
+    "pepr",
+    "k8s",
+    "policy-engine",
+    "pepr-module",
+    "security"
+  ],
+  "pepr": {
+    "name": "bigbang-sso",
+    "uuid": "c2859fc3-e3fb-5da1-a0f6-705bc8833be7",
+    "onError": "audit",
+    "alwaysIgnore": {
+      "namespaces": [],
+      "labels": []
+    }
+  },
+  "scripts": {
+    "k3d-setup": "k3d cluster delete pepr-dev && k3d cluster create pepr-dev --k3s-arg '--debug@server:0'",
+    "build": "pepr build",
+    "deploy": "pepr deploy",
+    "start": "pepr dev --host=host.k3d.internal"
+  },
+  "dependencies": {
+    "pepr": "0.2.8",
+    "yaml": "^2.2.2"
+  },
+  "devDependencies": {
+    "ts-node": "10.9.1",
+    "typescript": "5.0.4"
+  }
+}
